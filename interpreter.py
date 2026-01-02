@@ -41,8 +41,7 @@ class ast_var:
     brujin : int
 
     @classmethod
-    def parse(cls, env):
-        name = pop()
+    def parse(cls, name, env):
         brujin = env.index(name)
         return cls(brujin)
 
@@ -85,20 +84,17 @@ class ast_apply:
 
     @staticmethod
     def route(env):
-        match peek():
+        match pop():
             case '\\':
-                pop()
                 return ast_lam.parse(env)
             case '(':
-                pop()
                 body = ast_apply.parse(env)
                 pop()
                 return body
             case '?':
-                pop()
                 return ast_print
             case x:
-                return ast_var.parse(env)
+                return ast_var.parse(x, env)
 
     @classmethod
     def parse(cls, env=[]):
