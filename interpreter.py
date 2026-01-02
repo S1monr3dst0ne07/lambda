@@ -4,7 +4,7 @@ import itertools
 
 import sys
 
-with open('main.lam', 'r') as f:
+with open(sys.argv[1], 'r') as f:
     raw = f.read()
 
 def translate(rosetta, text):
