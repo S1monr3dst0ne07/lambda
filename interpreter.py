@@ -49,6 +49,15 @@ class ast_var:
         return env[self.brujin]
 
 
+@dataclass
+class ast_clos:
+    body : "body"
+    env  : list[""]
+
+    def eval(self, _, arg):
+        # replace environment
+        return self.body.eval([arg] + self.env)
+        
 
 @dataclass
 class ast_lam:
@@ -63,9 +72,11 @@ class ast_lam:
         return cls(body, [])
 
     def eval(self, env, arg=None):
+        #closure generation
         if arg is None:
-            return ast_lam(self.body, env)
-        return self.body.eval([arg] + (self.env if self.env else env))
+            return ast_clos(self.body, env)
+
+        return self.body.eval([arg] + env)
 
 count = 0
 
