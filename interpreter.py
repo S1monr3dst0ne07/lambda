@@ -79,45 +79,40 @@ class ast_print:
 
 @dataclass
 class ast_apply:
-    fn   : ast_lam
-    args : list[ast_lam | ast_var]
+    terms : list[ast_lam | ast_var]
 
     @staticmethod
     def route(env):
         match pop():
-            case '\\':
-                return ast_lam.parse(env)
             case '(':
                 body = ast_apply.parse(env)
                 pop()
                 return body
-            case '?':
-                return ast_print
-            case x:
-                return ast_var.parse(x, env)
+            case '\\':  return ast_lam.parse(env)
+            case '?':   return ast_print
+            case x:     return ast_var.parse(x, env)
 
     @classmethod
     def parse(cls, env=[]):
-        fn   = cls.route(env)
-        args = []
+        terms = []
         while has() and peek() != ')':
-            args.append(cls.route(env))
+            terms.append(cls.route(env))
 
-        #prune
-        if len(args) == 0:
-            return fn
+        #prune singleton applications
+        if len(terms) == 1:
+            return terms[0]
 
-        return cls(fn, args)
+        return cls(terms)
 
     def eval(self, env):
-        fn = self.fn
+        fn, *args = (
+            x.eval(env)
+            if type(x) in (ast_apply, ast_var)
+            else x
+            for x in self.terms
+        )
 
-        if type(fn) in (ast_apply, ast_var):
-            fn = fn.eval(env)
-
-        for arg in self.args:
-            if type(arg) in (ast_apply, ast_var):
-                arg = arg.eval(env) 
+        for arg in args:
             fn = fn.eval(env, arg)
 
         return fn
