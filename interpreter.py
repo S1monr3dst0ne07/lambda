@@ -91,22 +91,19 @@ class ast_print:
 class ast_apply:
     terms : list[ast_lam | ast_var]
 
-    @staticmethod
-    def route(env):
-        match pop():
-            case '(':
-                body = ast_apply.parse(env)
-                pop()
-                return body
-            case '\\':  return ast_lam.parse(env)
-            case '?':   return ast_print
-            case x:     return ast_var.parse(x, env)
-
     @classmethod
     def parse(cls, env=[]):
         terms = []
         while has() and peek() != ')':
-            terms.append(cls.route(env))
+            match pop():
+                case '(':
+                    t = ast_apply.parse(env)
+                    pop()
+                case '\\':  t = ast_lam.parse(env)
+                case '?':   t = ast_print
+                case x:     t = ast_var.parse(x, env)
+
+            terms.append(t)
 
         #prune singleton applications
         if len(terms) == 1:
