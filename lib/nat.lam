@@ -17,8 +17,8 @@ TEN     = (\f\n f(f(f(f(f(f(f(f(f(f(n)))))))))))
 SUCC    = (\n\f\x f(nfx))
 PRED    = (\n\f\x n (\r\i i (r f))(\h x) IDENT)
 
-ADD     = (\a\b (a SUCC) b)
-SUB     = (\a\b (a PRED) b)
+ADD     = (\a\b b SUCC a)
+SUB     = (\a\b b PRED a)
 MUL     = (\a\b a (ADD b) ZERO)
 
 -- reification
