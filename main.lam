@@ -1,12 +1,5 @@
--- boolean church encoding
-TRUE    = (\a\b a)
-FALSE   = (\a\b b)
+#lib/bool.lam
 
--- boolean operators
-NOT     = (\m m FALSE TRUE)
-LOR     = (\m\n m TRUE n)
-AND     = (\m\n m n FALSE)
-XOR     = (\m\n AND (LOR n m) (NOT (AND n m)))
 
 -- integer church encoding
 ZERO    = (\f\n n)
