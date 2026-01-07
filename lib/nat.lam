@@ -1,20 +1,20 @@
 #lib/base.lam
 
 -- natural number constants
-ZERO    = (\f\n n)
-ONE     = (\f\n f(n))
-TWO     = (\f\n f(f(n)))
-THREE   = (\f\n f(f(f(n))))
-FOUR    = (\f\n f(f(f(f(n)))))
-FIVE    = (\f\n f(f(f(f(f(n))))))
-SIX     = (\f\n f(f(f(f(f(f(n)))))))
-SEVEN   = (\f\n f(f(f(f(f(f(f(n))))))))
-EIGHT   = (\f\n f(f(f(f(f(f(f(f(n)))))))))
-NINE    = (\f\n f(f(f(f(f(f(f(f(f(n))))))))))
-TEN     = (\f\n f(f(f(f(f(f(f(f(f(f(n)))))))))))
+NAT::ZERO    = (\f\n n)
+NAT::ONE     = (\f\n f(n))
+NAT::TWO     = (\f\n f(f(n)))
+NAT::THREE   = (\f\n f(f(f(n))))
+NAT::FOUR    = (\f\n f(f(f(f(n)))))
+NAT::FIVE    = (\f\n f(f(f(f(f(n))))))
+NAT::SIX     = (\f\n f(f(f(f(f(f(n)))))))
+NAT::SEVEN   = (\f\n f(f(f(f(f(f(f(n))))))))
+NAT::EIGHT   = (\f\n f(f(f(f(f(f(f(f(n)))))))))
+NAT::NINE    = (\f\n f(f(f(f(f(f(f(f(f(n))))))))))
+NAT::TEN     = (\f\n f(f(f(f(f(f(f(f(f(f(n)))))))))))
 
 -- natural number operators
-SUCC    = (\n\f\x f(nfx))
-PRED    = (\n\f\x n (\r\i i (r f))(\h x) IDENT)
+NAT::SUCC    = (\n\f\x f(nfx))
+NAT::PRED    = (\n\f\x n (\r\i i (r f))(\h x) IDENT)
 
 

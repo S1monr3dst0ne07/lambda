@@ -1,10 +1,10 @@
 -- church encoded booleans
-TRUE    = (\a\b a)
-FALSE   = (\a\b b)
+BOOL::TRUE    = (\a\b a)
+BOOL::FALSE   = (\a\b b)
 
 -- boolean operators
-NOT     = (\m m FALSE TRUE)
-IOR     = (\m\n m TRUE n)
-AND     = (\m\n m n FALSE)
-XOR     = (\m\n AND (IOR n m) (NOT (AND n m)))
+BOOL::NOT     = (\m m BOOL::FALSE BOOL::TRUE)
+BOOL::IOR     = (\m\n m BOOL::TRUE n)
+BOOL::AND     = (\m\n m n BOOL::FALSE)
+BOOL::XOR     = (\m\n BOOL::AND (BOOL::IOR n m) (BOOL::NOT (BOOL::AND n m)))
 

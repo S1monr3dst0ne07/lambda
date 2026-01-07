@@ -1,0 +1,26 @@
+
+
+
+-- a list is a datastructure consisting of nodes.
+-- each node has three fields:
+--   <is-nil, head, tail>
+
+-- private constructor
+LIST::_MAKE-NODE  = (\n\h\t \s snht)
+
+-- getters
+LIST::IS-NIL = (\x x (\n\h\t n))
+LIST::HEAD   = (\x x (\n\h\t h))
+LIST::TAIL   = (\x x (\n\h\t t))
+
+-- public constructor of two valid node types
+LIST::NIL    = (     LIST::_MAKE-NODE TRUE IDENT IDENT)
+LIST::CONS   = (\h\t LIST::_MAKE-NODE FALSE h t)
+
+
+
+
+
+
+
+

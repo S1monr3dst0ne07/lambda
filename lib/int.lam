@@ -3,15 +3,16 @@
 #lib/bool.lam
 
 -- arith first order
-ADD     = (\a\b b SUCC a)
-SUB     = (\a\b b PRED a)
+INT::ADD     = (\a\b b NAT::SUCC a)
+INT::SUB     = (\a\b b NAT::PRED a)
 
 -- comparison
-IS-POS       = (\n n (CONST TRUE) FALSE)
-IS-GREATER   = (\a\b IS-POS (SUB a b))
+INT::IS-POS       = (\n n (BASE::CONST BOOL::TRUE) BOOL::FALSE)
+INT::IS-GREATER   = (\a\b INT::IS-POS (INT::SUB a b))
+INT::IS-LESSER    = (\a\b INT::IS-POS (INT::SUB b a))
 
 -- arith second order
-MUL     = (\a\b a (ADD b) ZERO)
+INT::MUL          = (\a\b a (INT::ADD b) NAT::ZERO)
 
 -- reification
-PRINT   = (\x x ? ?)
+INT::PRINT   = (\x x ? ?)
