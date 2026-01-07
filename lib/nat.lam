@@ -18,6 +18,7 @@ SUCC    = (\n\f\x f(nfx))
 PRED    = (\n\f\x n (\r\i i (r f))(\h x) IDENT)
 
 ADD     = (\a\b (a SUCC) b)
+SUB     = (\a\b (a PRED) b)
 MUL     = (\a\b a (ADD b) ZERO)
 
 -- reification
