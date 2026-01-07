@@ -2,27 +2,43 @@
 from dataclasses import dataclass
 
 import sys
+sys.setrecursionlimit(1000000)
 
-with open(sys.argv[1], 'r') as f:
-    raw = f.read()
-
-def translate(rosetta, text):
-    for key, value in rosetta.items():
-        text = text.replace(key, value)
-    return text
+if len(sys.argv) < 2:
+    print("usage: ./interpreter.py main.lam")
+    sys.exit(1)
 
 
-#preprocess
-rosetta = {}
-for rule in raw.split('\n'):
-    if rule.strip() == '': continue
-    if rule.startswith('--'): continue
-    if rule.count('=') != 1: print(f"Malformed rule: {rule}")
+def preprocess(path):
+    rosetta = {}
 
-    name, body = map(str.strip, rule.split('='))
-    rosetta[name] = translate(rosetta, body)
+    def translate(rosetta, text):
+        for key, value in rosetta.items():
+            text = text.replace(key, value)
+        return text
 
-main = rosetta["MAIN"]
+    with open(path, 'r') as f:
+        raw = f.read()
+
+    for line_no, rule in enumerate(raw.split('\n')):
+        if rule.strip() == '': continue
+        if rule.startswith('--'): continue #comment
+        if rule.startswith('#'):
+            path = rule[1:]
+            subrules = preprocess(path)
+            rosetta.update(subrules)
+            continue
+
+        if rule.count('=') != 1: 
+            print(f"Malformed rule in {path} at line {line_no}: {rule}")
+            sys.exit(1)
+
+        name, body = map(str.strip, rule.split('='))
+        rosetta[name] = translate(rosetta, body)
+
+    return rosetta
+
+main = preprocess(sys.argv[1])["MAIN"]
 print(main)
 
 
