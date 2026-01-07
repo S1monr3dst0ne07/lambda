@@ -1,0 +1,5 @@
+#lib/bool.lam
+
+PAIR = (\a\b\s s a b)
+FST  = (\p p TRUE)
+SND  = (\p p FALSE)
