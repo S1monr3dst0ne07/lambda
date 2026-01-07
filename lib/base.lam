@@ -1,0 +1,4 @@
+-- base functions
+IDENT = (\u u)
+CONST = (\x (\y x))
+
