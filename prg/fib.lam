@@ -1,0 +1,13 @@
+#lib/bool.lam
+#lib/nat.lam
+#lib/pairs.lam
+
+-- (a,b) -> (b,a+b)
+FIB'    = (\x PAIR (SND x) (ADD (FST x) (SND x)))
+FIB     = (\n FST ( (n FIB') (PAIR ONE ONE) ))
+
+
+MAIN    = PRINT (FIB TEN) 
+
+
+
