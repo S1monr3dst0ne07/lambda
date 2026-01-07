@@ -1,4 +1,7 @@
 -- base functions
-IDENT = (\u u)
-CONST = (\x (\y x))
+BASE::IDENT = (\u u)
+BASE::CONST = (\x (\y x))
+
+-- combinators
+BASE::FIX   = (\f f f)
 
