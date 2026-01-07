@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 from dataclasses import dataclass
+from pprint import pprint
 
 import sys
 sys.setrecursionlimit(1000000)
@@ -53,38 +54,29 @@ has  = lambda: len(src) > 0
 
 @dataclass
 class ast_var:
-    name : str
     brujin : int
 
     @classmethod
     def parse(cls, name, env):
         brujin = env.index(name)
-        return cls(name, brujin)
+        return cls(brujin)
 
     def eval(self, env):
         return env[self.brujin]
 
-    def debug(self, env):
-        return env[self.name]
-
 
 @dataclass
 class ast_clos:
-    binding : str
     body : "body"
     env  : list[""]
 
     def eval(self, _, arg):
         # replace environment
         return self.body.eval([arg] + self.env)
-
-    def debug(self, _, arg):
-        return self.body.debug({self.binding : arg} | self.env)
         
 
 @dataclass
 class ast_lam:
-    binding : str
     body : "body"
     
     @classmethod
@@ -92,32 +84,20 @@ class ast_lam:
         binding = pop()
         body    = ast_apply.parse([binding] + env)
 
-        return cls(binding, body)
+        return cls(body)
 
     def eval(self, env, arg=None):
         #closure generation
         if arg is None:
-            return ast_clos(self.binding, self.body, env[:])
+            return ast_clos(self.body, env)
 
         return self.body.eval([arg] + env)
 
-    def debug(self, env, arg=None):
-        if arg is None:
-            return ast_clos(self.binding, self.body, env)
-
-        return self.body.debug(env | {self.binding : arg})
 
 count = 0
 
 class ast_print:
     def eval(env, arg=None): 
-        if arg is None: return ast_print #normal
-        global count        
-        count += 1
-
-        return arg
-
-    def debug(env, arg=None): 
         if arg is None: return ast_print #normal
         global count        
         count += 1
@@ -143,17 +123,12 @@ class ast_apply:
 
             terms.append(t)
 
-        #prune singleton applications
-        if len(terms) == 1:
-            return terms[0]
-
         return cls(terms)
 
     def eval(self, env):
+
         fn, *args = (
             x.eval(env)
-            if type(x) in (ast_apply, ast_var)
-            else x
             for x in self.terms
         )
 
@@ -162,25 +137,12 @@ class ast_apply:
 
         return fn
 
-    def debug(self, env):
-        fn, *args = (
-            x.debug(env)
-            if type(x) in (ast_apply, ast_var)
-            else x
-            for x in self.terms
-        )
-
-        for arg in args:
-            fn = fn.debug(env, arg)
-
-        return fn
 
     
      
 
 root = ast_apply.parse()
-#node = root.eval(env = [])
-root.debug(env = {})
+node = root.eval(env = [])
 
 print(count)
 
