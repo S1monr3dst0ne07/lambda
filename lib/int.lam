@@ -15,4 +15,4 @@ INT::IS-LESSER    = (\a\b INT::IS-POS (INT::SUB b a))
 INT::MUL          = (\a\b a (INT::ADD b) NAT::ZERO)
 
 -- reification
-INT::PRINT   = (\x x ? ?)
+INT::PRINT   = (\x x ? ! x)

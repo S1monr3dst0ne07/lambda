@@ -95,12 +95,21 @@ class ast_lam:
 
 
 count = 0
-
-class ast_print:
+class ast_count:
     def eval(env, arg=None): 
-        if arg is None: return ast_print #normal
+        if arg is None: return ast_count #normal
         global count        
         count += 1
+
+        return arg
+
+class ast_reset:
+    def eval(env, arg=None):
+        if arg is None: return ast_reset #normal
+        global count
+
+        print(count)
+        count = 0
 
         return arg
 
@@ -118,7 +127,8 @@ class ast_apply:
                     t = ast_apply.parse(env)
                     pop()
                 case '\\':  t = ast_lam.parse(env)
-                case '?':   t = ast_print
+                case '?':   t = ast_count
+                case '!':   t = ast_reset
                 case x:     t = ast_var.parse(x, env)
 
             terms.append(t)
@@ -144,7 +154,6 @@ class ast_apply:
 root = ast_apply.parse()
 node = root.eval(env = [])
 
-print(count)
 
 
 
